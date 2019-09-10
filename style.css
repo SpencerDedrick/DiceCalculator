@@ -1,0 +1,91 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+body {
+  background: #161616;
+  color: #bdbdbd;
+  height: 100vh;
+  text-align: center;
+  font-family: sans-serif;
+  width: 80vw;
+}
+
+input {
+  width: 25vw;
+  font-size: 20px;
+}
+
+img {
+  width: 56px;
+  height: 48px;
+}
+
+h1 {
+  font-weight: 200;
+  font-style: 26px;
+  margin: 10px;
+}
+
+.container {
+  padding: 30px;
+}
+
+button {
+  padding: 5px;
+  font-size: 24px;
+  color: #bdbdbd;
+  background: #161616;
+  border: 1px solid grey;
+}
+
+#rollZone {
+  background: blue;
+  margin: auto;
+}
+
+#history {
+  flex: 1 1 40vw;
+}
+
+#history h1 {
+  height: 100%;
+  background: red;
+}
+
+.dice_container {
+  display: flex;
+  justify-content: center;
+}
+
+.dice_container > button {
+  margin-top: 10px;
+  flex: 1;
+}
+
+.tooltip {
+  position: relative;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}

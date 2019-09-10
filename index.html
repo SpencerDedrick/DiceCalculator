@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Dice Roller</title>
+  </head>
+  <body>
+    <div id="rollZone">
+      <h1>Text2Roll</h1>
+
+      <input type="text" id="input" autocomplete="on" />
+      <button id="submit">Roll</button>
+      <button id="clear">reset</button>
+      <div class="dice_button_container_plus dice_container">
+        <h1>Multi +1</h1>
+        <button class="plusButton" value="20">+1d20</button>
+        <button class="plusButton" value="12">+1d12</button>
+        <button class="plusButton" value="10">+1d10</button>
+        <button class="plusButton" value="8">+1d8</button>
+        <button class="plusButton" value="6">+1d6</button>
+        <button class="plusButton" value="4">+1d4</button>
+      </div>
+      <div class="dice_button_container_minus dice_container">
+        <h1>Multi -1</h1>
+        <button class="minusButton" value="20">-1d20</button>
+        <button class="minusButton" value="12">-1d12</button>
+        <button class="minusButton" value="10">-1d10</button>
+        <button class="minusButton" value="8">-1d8</button>
+        <button class="minusButton" value="6">-1d6</button>
+        <button class="minusButton" value="4">-1d4</button>
+      </div>
+      <div class="dice_button_container dice_container">
+        <h1>Single</h1>
+        <button class="diceButton" value="20">1d20</button>
+        <button class="diceButton" value="12">1d12</button>
+        <button class="diceButton" value="10">1d10</button>
+        <button class="diceButton" value="8">1d8</button>
+        <button class="diceButton" value="6">1d6</button>
+        <button class="diceButton" value="4">1d4</button>
+      </div>
+      <div>
+        <h1>Roll Result:</h1>
+        <h1 class="result">00</h1>
+      </div>
+    </div>
+    <div id="history">
+      <h1>Roll History:</h1>
+      <div id="log"></div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
