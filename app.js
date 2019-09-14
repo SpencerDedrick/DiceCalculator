@@ -1,162 +1,184 @@
-const input = document.getElementById("input");
-const submit = document.getElementById("submit");
-const plusButtons = document.querySelectorAll(".plusButton");
-const minusButtons = document.querySelectorAll(".minusButton");
-const diceButtons = document.querySelectorAll(".diceButton");
-const result = document.querySelector(".result");
-const clear = document.getElementById("clear");
-const log = document.getElementById("log");
-var counter = 1;
-
-let diceObj = {
-  20: {
-    qty: 0,
-    value: 20
-  },
-  12: {
-    qty: 0,
-    value: 12
-  },
-  10: {
-    qty: 0,
-    value: 10
-  },
-  8: {
-    qty: 0,
-    value: 8
-  },
-  6: {
-    qty: 0,
-    value: 6
-  },
-  4: {
-    qty: 0,
-    value: 4
+class Calculator {
+  constructor(rollInputTextElement, rollResultTextElement) {
+    this.rollInputTextElement = rollInputTextElement;
+    this.rollResultTextElement = rollResultTextElement;
+    this.clearAll();
   }
-};
 
-plusButtons.forEach(button => button.addEventListener("click", plusOne));
-minusButtons.forEach(button => button.addEventListener("click", minusOne));
-diceButtons.forEach(button => button.addEventListener("click", rollSingle));
+  clearAll() {
+    this.rollInput = "";
+    this.rollResult = "";
+    this.operation = undefined;
+  }
 
-/* Resets the input box */
-clear.addEventListener("click", () => {
-  input.value = "";
-  diceObj = {
-    20: {
-      qty: 0,
-      value: 20
-    },
-    12: {
-      qty: 0,
-      value: 12
-    },
-    10: {
-      qty: 0,
-      value: 10
-    },
-    8: {
-      qty: 0,
-      value: 8
-    },
-    6: {
-      qty: 0,
-      value: 6
-    },
-    4: {
-      qty: 0,
-      value: 4
+  clearResult() {
+    this.rollResult = "";
+    this.operation = undefined;
+  }
+
+  clearInput() {
+    this.rollInput = "";
+    this.operation = undefined;
+  }
+
+  delete() {
+    this.rollInput = this.rollInput.toString().slice(0, -1);
+  }
+
+  appendNumber(number) {
+    if (this.rollInput[this.rollInput.length - 1] == "=") {
+      this.clearInput();
     }
-  };
+    if (number === "d" && this.rollInput[this.rollInput.length - 1] == "d")
+      return;
+    this.rollInput = this.rollInput.toString() + number.toString();
+  }
+
+  addOperation(operation) {
+    if (this.rollInput === "") return;
+    /* if (this.rollInput !== "") {
+      this.compute();
+    } */
+    this.operation = operation;
+    /*  this.rollInput = this.rollResult;*/
+    this.rollInput = `${this.rollInput} ${this.operation} `;
+  }
+
+  d20Single() {
+    this.rollResult = rollDice(20);
+    this.rollInput = "1d20 =";
+  }
+
+  compute() {
+    if (this.rollInput[this.rollInput.length - 1] == "=") {
+      return;
+    }
+    let computation = 0;
+    let formattedString = formatString(this.rollInput);
+    for (let i = 0; i < formattedString.length; i++) {
+      let arr = formattedString[i].split("d");
+      formattedString[i] = arr;
+    }
+    this.clearResult();
+    this.rollInput = `${this.rollInput} =`;
+    this.rollResult = `${calcTotal(formattedString)}`;
+
+    /*  let computation;
+    const prev = parseFloat(this.rollInput);
+    const current = parseFloat(this.rollResult);
+    if (isNaN(prev) || isNaN(current)) return;
+    switch (this.operation) {
+      case "+":
+        computation = prev + current;
+        break;
+      case "-":
+        computation = prev - current;
+      case "*":
+        computation = prev * current;
+        break;
+      case "÷":
+        computation = prev / current;
+        break;
+      default:
+        return;
+    }
+    this.operation = undefined;
+    this.rollInput = ""; */
+  }
+
+  /*  getDisplayNumber(number) {
+    const stringNumber = number.toString();
+    const integerDigits = parseFloat(stringNumber.split(".")[0]);
+    const decimalDigits = stringNumber.split(".")[1];
+    let integerDisplay;
+    if (isNaN(integerDigits)) {
+      integerDisplay = "";
+    } else {
+      integerDisplay = integerDigits.toLocaleString("en", {
+        maximumFractionDigits: 0
+      });
+    }
+    if (decimalDigits != null) {
+      return `${integerDisplay}.${decimalDigits}`;
+    } else {
+      return integerDisplay;
+    }
+  } */
+  updateInput() {
+    this.rollInputTextElement.innerText = this.rollInput;
+  }
+
+  updateResult() {
+    this.rollResultTextElement.innerText = this.rollResult;
+  }
+
+  updateHistory() {
+    let rollDiv = document.createElement("div");
+    console.log(rollDiv);
+    let historyInput = document.createTextNode(`${this.rollInput}`);
+    let historyResult = document.createTextNode(`${this.rollResult}`);
+    let container = historyDiv;
+    rollDiv.appendChild(historyInput);
+    rollDiv.appendChild(historyResult);
+    container.insertBefore(rollDiv, container.childNodes[1]);
+  }
+}
+let counter = 0;
+const numberButtons = document.querySelectorAll("[data-number]");
+const d20Button = document.querySelector("[data-d20]");
+const operationButtons = document.querySelectorAll("[data-operation]");
+const rollButton = document.querySelector("[data-roll]");
+const deleteButton = document.querySelector("[data-delete]");
+const allClearButton = document.querySelector("[data-all-clear]");
+const rollInputTextElement = document.querySelector("[data-roll-input]");
+const rollResultTextElement = document.querySelector("[data-roll-result]");
+const historyDiv = document.querySelector("[data-history]");
+
+const calculator = new Calculator(rollInputTextElement, rollResultTextElement);
+
+numberButtons.forEach(button => {
+  button.addEventListener("click", () => {
+    calculator.appendNumber(button.innerText);
+    calculator.updateInput();
+  });
 });
 
-function rollSingle() {
-  result.innerHTML = rollDice(this.value);
-}
+operationButtons.forEach(button => {
+  button.addEventListener("click", () => {
+    calculator.addOperation(button.innerText);
+    calculator.updateInput();
+  });
+});
 
-function plusOne() {
-  diceObj[this.value].qty += 1;
-  let text = "";
-  let diceArray = [20, 12, 10, 8, 6, 4];
-  let textArray = [
-    `${diceObj[20].qty}d20`,
-    `${diceObj[12].qty}d12`,
-    `${diceObj[10].qty}d10`,
-    `${diceObj[8].qty}d8`,
-    `${diceObj[6].qty}d6`,
-    `${diceObj[4].qty}d4`
-  ];
+rollButton.addEventListener("click", button => {
+  calculator.compute();
+  calculator.updateResult();
+  calculator.updateHistory();
+  calculator.updateInput();
+});
 
-  for (let i = 0; i < textArray.length; i++) {
-    if (text == "" && diceObj[diceArray[i]].qty != 0) {
-      if (diceObj[diceArray[i]].qty != 0) {
-        text += `${textArray[i]}`;
-      }
-    } else if (diceObj[diceArray[i]].qty != 0) {
-      text += ` + ${textArray[i]}`;
-    }
-  }
-  input.value = text;
-}
+allClearButton.addEventListener("click", button => {
+  calculator.clearAll();
+  calculator.updateInput();
+  calculator.updateResult();
+});
 
-function minusOne() {
-  console.log("working");
-  diceObj[this.value].qty -= 1;
-  let text = "";
-  let diceArray = [20, 12, 10, 8, 6, 4];
-  let textArray = [
-    `${diceObj[20].qty}d20`,
-    `${diceObj[12].qty}d12`,
-    `${diceObj[10].qty}d10`,
-    `${diceObj[8].qty}d8`,
-    `${diceObj[6].qty}d6`,
-    `${diceObj[4].qty}d4`
-  ];
+deleteButton.addEventListener("click", button => {
+  calculator.delete();
+  calculator.updateInput();
+});
 
-  for (let i = 0; i < textArray.length; i++) {
-    if (diceObj[diceArray[i]].qty < 0) {
-      diceObj[diceArray[i]].qty = 0;
-    } else if (text == "" && diceObj[diceArray[i]].qty != 0) {
-      if (diceObj[diceArray[i]].qty != 0) {
-        text += `${textArray[i]}`;
-      }
-    } else if (diceObj[diceArray[i]].qty != 0) {
-      text += ` + ${textArray[i]}`;
-    }
-  }
-  input.value = text;
-}
+d20Button.addEventListener("click", button => {
+  calculator.d20Single();
+  calculator.updateInput();
+  calculator.updateResult();
+  calculator.updateHistory();
+});
 
-/*Rolls dice based on input value when submit is clicked*/
-submit.addEventListener("click", text2Roll);
-
-function text2Roll() {
-  inputValue = input.value;
-  value = input.value;
-
-  value = removeSpaces(value);
-  value = removePlus(value);
-  for (let i = 0; i < value.length; i++) {
-    let arr = value[i].split("d");
-    value[i] = arr;
-  }
-  rollResult = calcTotal(value);
-
-  result.innerHTML = rollResult;
-  console.log(result);
-  roll2Log(rollResult, inputValue);
-}
-
-function rollDice(num) {
-  return Math.floor(Math.random() * num + 1);
-}
-
-function removeSpaces(string) {
-  return string.replace(/\s/g, "");
-}
-
-function removePlus(string) {
-  return string.split("+");
+function formatString(string) {
+  let newString = string.replace(/\s/g, "");
+  newString = newString.split("+");
+  return newString;
 }
 
 function calcTotal(arr) {
@@ -170,27 +192,9 @@ function calcTotal(arr) {
       console.log(`Roll ${counter}: ${result}`);
     }
   }
-
   return total;
 }
 
-function roll2Log(result, inputString) {
-  console.log("roll2Log");
-  console.log(result);
-  console.log(inputString);
-
-  let paragraph = document.createElement("p");
-  let text = document.createTextNode(`${counter}. ${inputString} = ${result} `);
-  paragraph.appendChild(text);
-  let span = document.createElement("span");
-  var spanText = document.createElement("input");
-  span.appendChild(spanText);
-  paragraph.appendChild(span);
-  console.log(paragraph);
-
-  paragraph.classList.add("tooltip");
-  span.classList.add("tooltiptext");
-  spanText.placeholder = "Add notes here";
-  log.insertBefore(paragraph, log.childNodes[0]);
-  counter++;
+function rollDice(num) {
+  return Math.floor(Math.random() * num + 1);
 }
