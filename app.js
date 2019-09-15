@@ -116,7 +116,7 @@ class Calculator {
     let rollDiv = document.createElement("div");
     console.log(rollDiv);
     let historyInput = document.createTextNode(`${this.rollInput}`);
-    let historyResult = document.createTextNode(`${this.rollResult}`);
+    let historyResult = document.createTextNode(` ${this.rollResult}`);
     let container = historyDiv;
     rollDiv.appendChild(historyInput);
     rollDiv.appendChild(historyResult);

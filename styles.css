@@ -69,10 +69,82 @@ i {
 }
 
 .span-6-row {
+  overflow-y: auto;
   grid-row: span 6;
   grid-column: span 2;
   background-color: rgba(0, 0, 0, 0.75);
   color: rgba(255, 255, 255, 0.75);
-  font-size: 1.5rem;
+  font-size: 1rem;
   padding: 10px;
+  height: 70vh;
+}
+
+@media (max-width: 600px) {
+  .calculator-grid {
+    min-width: 100vw;
+    min-height: 100vh;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: minmax(120px, auto) repeat(5, 1fr);
+  }
+
+  .output {
+    grid-column: 1/ -1;
+  }
+
+  .span-two {
+    grid-column: span 3;
+  }
+  .span-6-row {
+    display: none;
+    order: 100;
+    grid-row: span 1;
+    grid-column: span 6;
+    background-color: rgba(0, 0, 0, 0.75);
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 1.5rem;
+    padding: 10px;
+  }
+  .span-2-row {
+    grid-row: span 1;
+  }
+  .span-three {
+    grid-column: span 3;
+  }
+
+  .span-four {
+    grid-column: span 5;
+  }
+
+  #d {
+    grid-column: span 3;
+  }
+}
+
+@media (orientation: landscape) {
+  .calculator-grid {
+    min-width: 100vw;
+    min-height: 100vh;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: minmax(120px, auto) repeat(5, 1fr);
+  }
+
+  .output {
+    grid-column: 1/ -3;
+  }
+
+  .span-two {
+    grid-column: span 2;
+  }
+  .span-6-row {
+    height: 100vh;
+    grid-row: span 6;
+    grid-column: span 2;
+    background-color: rgba(0, 0, 0, 0.75);
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 1.5rem;
+    padding: 10px;
+  }
+  .span-2-row {
+    grid-row: span 2;
+  }
 }
