@@ -8,7 +8,7 @@
 }
 
 body {
-  background: linear-gradient(to right, #0e0717, #da8700);
+  background: linear-gradient(to right, #694499, #da8700);
   margin: 0;
   padding: 0;
 }
@@ -120,7 +120,7 @@ i {
   }
 }
 
-@media (orientation: landscape) {
+@media (max-height: 500px) {
   .calculator-grid {
     min-width: 100vw;
     min-height: 100vh;
