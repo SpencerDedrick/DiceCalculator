@@ -1,4 +1,6 @@
 # DiceRollApp
+One of my first (mostly) from scratch independent programming projects.
+
 Dice Rolling App
 This is a dice rolling app  I made for my friends to use.
 There is a text to dice roll element that follows a traditional tabletop RPG format. 
